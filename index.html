@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Emiel's Apps</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .app { margin-bottom: 15px; }
+    button { padding: 5px 10px; }
+  </style>
+</head>
+<body>
+
+<h1>Emiel's Applications</h1>
+<div id="app-list"></div>
+
+<script>
+fetch('apps.json')
+  .then(response => response.json())
+  .then(apps => {
+    const container = document.getElementById('app-list');
+    apps.filter(app => app.visible).forEach(app => {
+      const div = document.createElement('div');
+      div.className = 'app';
+      div.innerHTML = `
+        <h3>${app.name}</h3>
+        <p>${app.description}</p>
+        <button onclick="location.href='apps/${app.folder}/index.html'">
+          Open
+        </button>
+      `;
+      container.appendChild(div);
+    });
+  });
+</script>
+
+</body>
+</html>
