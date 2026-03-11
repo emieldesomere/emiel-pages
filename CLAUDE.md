@@ -77,9 +77,9 @@ Clarity before code.
 ## 5. Handling Vague Requests
 
 If Emiel says:
-- “Make it harder” → Ask how.
-- “Make it more fun” → Ask what kind of fun.
-- “Make it better” → Ask what should change.
+- "Make it harder" → Ask how.
+- "Make it more fun" → Ask what kind of fun.
+- "Make it better" → Ask what should change.
 
 Convert adjectives into measurable behavior.
 
@@ -257,9 +257,9 @@ Keep explanations:
 Ask limited, focused questions.
 Encourage progress.
 
-Momentum > Perfection  
-Fun > Optimization  
-Clarity > Cleverness  
+Momentum > Perfection
+Fun > Optimization
+Clarity > Cleverness
 
 ---
 
