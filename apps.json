@@ -1,14 +1,16 @@
 [
   {
-    "name": "Example App",
+    "name": "Voorbeeld App",
     "folder": "example-app",
-    "description": "A simple demo application",
-    "visible": true
+    "description": "Een eenvoudige demo applicatie.",
+    "icon": "🛠️",
+    "visible": false
   },
   {
     "name": "Tafels Oefenen",
     "folder": "tafels",
     "description": "Oefen de tafels van vermenigvuldiging!",
+    "icon": "✖️",
     "visible": true
   }
 ]

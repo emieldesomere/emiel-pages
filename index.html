@@ -1,37 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Emiel's Apps</title>
+  <title>Emiel's Spelletjes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .app { margin-bottom: 15px; }
-    button { padding: 5px 10px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #1a1a2e;
+      color: white;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      color: #a0c4ff;
+      font-size: 1.1rem;
+      margin-top: 8px;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .app-card {
+      background: #16213e;
+      border-radius: 20px;
+      padding: 30px 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .app-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+
+    .app-icon {
+      font-size: 3rem;
+      margin-bottom: 14px;
+    }
+
+    .app-card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .app-card p {
+      font-size: 0.95rem;
+      color: #a0c4ff;
+      flex-grow: 1;
+      margin-bottom: 20px;
+    }
+
+    .open-btn {
+      padding: 12px 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      background: #4cc9f0;
+      color: #1a1a2e;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.15s;
+    }
+
+    .open-btn:hover {
+      background: #72d9f8;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      color: #4a5568;
+      font-size: 0.85rem;
+    }
   </style>
 </head>
 <body>
 
-<h1>Emiel's Applications</h1>
-<div id="app-list"></div>
+<header>
+  <h1>🎮 Emiel's Spelletjes</h1>
+  <p>Kies een spelletje en speel!</p>
+</header>
+
+<div class="app-grid" id="app-list"></div>
+
+<footer>Gemaakt door Emiel</footer>
 
 <script>
-fetch('apps.json')
-  .then(response => response.json())
-  .then(apps => {
-    const container = document.getElementById('app-list');
-    apps.filter(app => app.visible).forEach(app => {
-      const div = document.createElement('div');
-      div.className = 'app';
-      div.innerHTML = `
-        <h3>${app.name}</h3>
-        <p>${app.description}</p>
-        <button onclick="location.href='apps/${app.folder}/index.html'">
-          Open
-        </button>
-      `;
-      container.appendChild(div);
-    });
-  });
+const apps = [
+  {
+    name: "Tafels Oefenen",
+    folder: "tafels",
+    description: "Oefen de tafels van vermenigvuldiging!",
+    icon: "✖️"
+  }
+];
+
+const container = document.getElementById('app-list');
+apps.forEach(app => {
+  const card = document.createElement('div');
+  card.className = 'app-card';
+  card.innerHTML = `
+    <div class="app-icon">${app.icon}</div>
+    <h2>${app.name}</h2>
+    <p>${app.description}</p>
+    <button class="open-btn" onclick="location.href='apps/${app.folder}/index.html'">
+      Spelen!
+    </button>
+  `;
+  container.appendChild(card);
+});
 </script>
 
 </body>
