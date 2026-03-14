@@ -4,5 +4,11 @@
     "folder": "example-app",
     "description": "A simple demo application",
     "visible": true
+  },
+  {
+    "name": "Tafels Oefenen",
+    "folder": "tafels",
+    "description": "Oefen de tafels van vermenigvuldiging!",
+    "visible": true
   }
 ]
