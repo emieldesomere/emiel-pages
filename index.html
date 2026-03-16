@@ -111,29 +111,25 @@
 <footer>Gemaakt door Emiel</footer>
 
 <script>
-const apps = [
-  {
-    name: "Tafels Oefenen",
-    folder: "tafels",
-    description: "Oefen de tafels van vermenigvuldiging!",
-    icon: "✖️"
-  }
-];
-
 const container = document.getElementById('app-list');
-apps.forEach(app => {
-  const card = document.createElement('div');
-  card.className = 'app-card';
-  card.innerHTML = `
-    <div class="app-icon">${app.icon}</div>
-    <h2>${app.name}</h2>
-    <p>${app.description}</p>
-    <button class="open-btn" onclick="location.href='apps/${app.folder}/index.html'">
-      Spelen!
-    </button>
-  `;
-  container.appendChild(card);
-});
+
+fetch('apps.json')
+  .then(r => r.json())
+  .then(apps => {
+    apps.filter(app => app.visible !== false).forEach(app => {
+      const card = document.createElement('div');
+      card.className = 'app-card';
+      card.innerHTML = `
+        <div class="app-icon">${app.icon}</div>
+        <h2>${app.name}</h2>
+        <p>${app.description}</p>
+        <button class="open-btn" onclick="location.href='apps/${app.folder}/index.html'">
+          Spelen!
+        </button>
+      `;
+      container.appendChild(card);
+    });
+  });
 </script>
 
 </body>
