@@ -1,0 +1,23 @@
+const APPS = [
+  {
+    name: "Voorbeeld App",
+    folder: "example-app",
+    description: "Een eenvoudige demo applicatie.",
+    icon: "🛠️",
+    visible: false
+  },
+  {
+    name: "Tafels Oefenen",
+    folder: "tafels",
+    description: "Oefen de tafels van vermenigvuldiging!",
+    icon: "✖️",
+    visible: true
+  },
+  {
+    name: "Naar de Maan",
+    folder: "naar-de-maan",
+    description: "Lanceer een ruimteschip en probeer in een baan om de maan te geraken!",
+    icon: "🚀",
+    visible: true
+  }
+];

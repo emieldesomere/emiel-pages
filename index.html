@@ -110,26 +110,23 @@
 
 <footer>Gemaakt door Emiel</footer>
 
+<script src="apps.js"></script>
 <script>
 const container = document.getElementById('app-list');
 
-fetch('apps.json')
-  .then(r => r.json())
-  .then(apps => {
-    apps.filter(app => app.visible !== false).forEach(app => {
-      const card = document.createElement('div');
-      card.className = 'app-card';
-      card.innerHTML = `
-        <div class="app-icon">${app.icon}</div>
-        <h2>${app.name}</h2>
-        <p>${app.description}</p>
-        <button class="open-btn" onclick="location.href='apps/${app.folder}/index.html'">
-          Spelen!
-        </button>
-      `;
-      container.appendChild(card);
-    });
-  });
+APPS.filter(app => app.visible !== false).forEach(app => {
+  const card = document.createElement('div');
+  card.className = 'app-card';
+  card.innerHTML = `
+    <div class="app-icon">${app.icon}</div>
+    <h2>${app.name}</h2>
+    <p>${app.description}</p>
+    <button class="open-btn" onclick="location.href='apps/${app.folder}/index.html'">
+      Spelen!
+    </button>
+  `;
+  container.appendChild(card);
+});
 </script>
 
 </body>
