@@ -24,140 +24,99 @@
       overflow: hidden;
       min-height: 0;
     }
-    #canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
+    #canvas { display: block; width: 100%; height: 100%; }
+
     #status {
-      position: absolute;
-      top: 48px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #ffcc44;
-      font-size: 13px;
-      text-align: center;
-      pointer-events: none;
-      text-shadow: 0 0 8px rgba(255,200,50,0.5);
-      white-space: nowrap;
-      letter-spacing: 0.5px;
+      position: absolute; top: 48px; left: 50%; transform: translateX(-50%);
+      color: #ffcc44; font-size: 13px; text-align: center;
+      pointer-events: none; text-shadow: 0 0 8px rgba(255,200,50,0.5);
+      white-space: nowrap; letter-spacing: 0.5px;
     }
     #orbit-msg {
-      position: absolute;
-      top: 68px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #44ffaa;
-      font-size: 13px;
-      font-weight: bold;
+      position: absolute; top: 68px; left: 50%; transform: translateX(-50%);
+      color: #44ffaa; font-size: 13px; font-weight: bold;
       text-shadow: 0 0 10px rgba(50,255,150,0.6);
-      pointer-events: none;
-      white-space: nowrap;
+      pointer-events: none; white-space: nowrap;
     }
     #home-btn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.7);
-      padding: 5px 11px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 12px;
-      z-index: 10;
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7); padding: 5px 11px; border-radius: 5px;
+      cursor: pointer; font-size: 12px; z-index: 10;
     }
     #home-btn:hover { background: rgba(255,255,255,0.15); color: white; }
-    #controls {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 12px;
-      background: rgba(8, 8, 22, 0.97);
-      border-top: 1px solid #1a1a3a;
-      flex-shrink: 0;
-      flex-wrap: wrap;
+
+    /* Fuel HUD */
+    #fuel-hud {
+      display: none; position: absolute; top: 12px; right: 12px; z-index: 10;
     }
-    .ctrl-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .fuel-label {
+      font-size: 9px; color: #666; letter-spacing: 1px;
+      text-align: right; margin-bottom: 4px; text-transform: uppercase;
+    }
+    .fuel-track {
+      width: 110px; height: 9px; background: #111;
+      border: 1px solid #2a2a3a; border-radius: 5px; overflow: hidden;
+    }
+    #fuel-fill { height: 100%; width: 100%; border-radius: 4px; transition: width 0.08s; }
+
+    /* D-pad */
+    #dpad {
+      display: none; position: absolute; bottom: 14px; right: 14px; z-index: 10;
+    }
+    #dpad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 58px);
+      grid-template-rows: repeat(3, 58px);
       gap: 3px;
     }
-    .ctrl-label {
-      font-size: 10px;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
+    .dpad-btn {
+      width: 58px; height: 58px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18);
+      color: white; border-radius: 10px; cursor: pointer; font-size: 18px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; touch-action: none; -webkit-tap-highlight-color: transparent;
     }
-    .ctrl-row {
-      display: flex;
-      align-items: center;
-      gap: 5px;
+    .dpad-btn small { font-size: 8px; color: #888; letter-spacing: 0.5px; }
+    .dpad-btn.pressed { background: rgba(255,220,80,0.2); border-color: rgba(255,220,80,0.5); }
+
+    /* Controls bar */
+    #controls {
+      display: flex; gap: 12px; align-items: center; justify-content: center;
+      padding: 8px 12px; background: rgba(8,8,22,0.97);
+      border-top: 1px solid #1a1a3a; flex-shrink: 0; flex-wrap: wrap;
     }
+    .ctrl-group { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .ctrl-label { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 1.2px; }
+    .ctrl-row { display: flex; align-items: center; gap: 5px; }
     input[type=number] {
-      width: 76px;
-      padding: 6px 4px;
-      background: #0b0d18;
-      border: 1px solid #252845;
-      color: #dde;
-      border-radius: 6px;
-      text-align: center;
-      font-size: 17px;
-      font-weight: bold;
+      width: 76px; padding: 6px 4px; background: #0b0d18;
+      border: 1px solid #252845; color: #dde; border-radius: 6px;
+      text-align: center; font-size: 17px; font-weight: bold;
     }
-    input[type=number]:focus {
-      outline: none;
-      border-color: #3a4080;
-      background: #0d0f20;
-    }
+    input[type=number]:focus { outline: none; border-color: #3a4080; background: #0d0f20; }
     .unit { font-size: 11px; color: #555; }
     .btn {
-      padding: 9px 18px;
-      font-size: 14px;
-      border-radius: 7px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      letter-spacing: 0.3px;
+      padding: 9px 18px; font-size: 14px; border-radius: 7px; border: none;
+      cursor: pointer; font-weight: bold; letter-spacing: 0.3px;
       transition: filter 0.12s, transform 0.08s;
     }
     .btn:active:not(:disabled) { transform: scale(0.95); }
-    .btn:disabled {
-      background: #1a1a28 !important;
-      color: #444 !important;
-      cursor: default;
-      filter: none !important;
-    }
-    #startBtn {
-      background: linear-gradient(145deg, #00a840, #00cc50);
-      color: white;
-    }
+    .btn:disabled { background: #1a1a28 !important; color: #444 !important; cursor: default; filter: none !important; }
+    #startBtn { background: linear-gradient(145deg,#00a840,#00cc50); color: white; }
     #startBtn:hover:not(:disabled) { filter: brightness(1.15); }
-    #abortBtn {
-      background: linear-gradient(145deg, #aa2000, #cc3300);
-      color: white;
-    }
+    #abortBtn { background: linear-gradient(145deg,#aa2000,#cc3300); color: white; }
     #abortBtn:hover:not(:disabled) { filter: brightness(1.15); }
 
     /* Modal */
     #modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.78);
-      justify-content: center;
-      align-items: center;
-      z-index: 300;
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.78); justify-content: center; align-items: center; z-index: 300;
     }
     #modal.show { display: flex; }
     #modal-box {
-      background: #0c0e1e;
-      border: 1px solid #2a2d50;
-      border-radius: 14px;
-      padding: 32px 44px;
-      text-align: center;
+      background: #0c0e1e; border: 1px solid #2a2d50; border-radius: 14px;
+      padding: 32px 44px; text-align: center;
     }
     #modal-box h2 { font-size: 20px; margin-bottom: 8px; }
     #modal-box p { color: #778; margin-bottom: 22px; font-size: 13px; }
@@ -174,7 +133,27 @@
     <div id="status"></div>
     <div id="orbit-msg"></div>
     <button id="home-btn" onclick="window.location.href='../../index.html'">← Terug</button>
+
+    <div id="fuel-hud">
+      <div class="fuel-label">Brandstof</div>
+      <div class="fuel-track"><div id="fuel-fill"></div></div>
+    </div>
+
+    <div id="dpad">
+      <div id="dpad-grid">
+        <div></div>
+        <button class="dpad-btn" id="btn-boost">▲<br><small>Boost</small></button>
+        <div></div>
+        <button class="dpad-btn" id="btn-left">◄<br><small>Links</small></button>
+        <div></div>
+        <button class="dpad-btn" id="btn-right">►<br><small>Rechts</small></button>
+        <div></div>
+        <button class="dpad-btn" id="btn-brake">▼<br><small>Rem</small></button>
+        <div></div>
+      </div>
+    </div>
   </div>
+
   <div id="controls">
     <div class="ctrl-group">
       <div class="ctrl-label">Hoek</div>
@@ -211,36 +190,43 @@
 // ============================================================
 const GM_EARTH = 398600.4418;  // km³/s²
 const GM_MOON  = 4902.8001;    // km³/s²
-const R_EARTH  = 6371;         // km
-const R_MOON   = 1737;         // km
+const R_EARTH  = 6371;
+const R_MOON   = 1737;
 const MOON_Y   = 384400;       // km above Earth center
 
-// Visual radii on screen (Earth:Moon ratio is correct ≈ 3.7:1)
-const EARTH_VR = 52;   // px
-const MOON_VR  = 14;   // px  (52 * 1737/6371 ≈ 14.2)
+const EARTH_VR = 52;           // visual radius px
+const MOON_VR  = 14;           // visual radius px (correct ratio ≈ 3.7:1)
 
-// Earth appears at this fraction from screen bottom
-const EARTH_Y_FRAC = 0.13;
-// Moon appears at this fraction from screen bottom
+const EARTH_Y_FRAC = 0.13;     // fraction from screen bottom
 const MOON_Y_FRAC  = 0.78;
 
-// Simulation speed
-const TIME_MULT = 10000; // simulated seconds per real second
+const TIME_MULT = 10000;       // sim seconds per real second
 const SUBSTEPS  = 80;
+
+// Controls
+const THRUST_DV       = 0.5;            // km/s per real second of boost/brake
+const TURN_SPEED      = 3 * Math.PI / 180; // rad per real second
+const FUEL_BOOST_RATE = 1 / 10;         // fraction/s → 10 sec full boost
+const FUEL_TURN_RATE  = 1 / 100;        // fraction/s → 10× minder dan boost
 
 // ============================================================
 //  STATE
 // ============================================================
-let state    = 'ready';   // 'ready' | 'flying' | 'exploding'
-let ship     = { x:0, y:0, vx:0, vy:0 };
+let state    = 'ready';
+let ship     = { x:0, y:0, vx:0, vy:0, angle:0, fuel:1 };
 let trail    = [];
 let explPts  = [];
 let explTimer= 0;
 let lastTs   = null;
 let inOrbit  = false;
 
-const canvas = document.getElementById('canvas');
-const ctx    = canvas.getContext('2d');
+const input = { boost:false, brake:false, left:false, right:false };
+
+const canvas   = document.getElementById('canvas');
+const ctx      = canvas.getContext('2d');
+const fuelFill = document.getElementById('fuel-fill');
+const fuelHud  = document.getElementById('fuel-hud');
+const dpad     = document.getElementById('dpad');
 
 function resize() {
   canvas.width  = canvas.offsetWidth;
@@ -253,42 +239,27 @@ window.addEventListener('resize', resize);
 //  COORDINATE TRANSFORM
 // ============================================================
 function getScale() {
-  // Maps physical km to screen pixels
-  // Earth center (y=0) is at screen y = H*(1-EARTH_Y_FRAC)
-  // Moon center (y=MOON_Y) is at screen y = H*(1-MOON_Y_FRAC)
   const H = canvas.height;
-  const earthSY = H * (1 - EARTH_Y_FRAC);
-  const moonSY  = H * (1 - MOON_Y_FRAC);
-  return (earthSY - moonSY) / MOON_Y;  // px per km
+  return (H*(1-EARTH_Y_FRAC) - H*(1-MOON_Y_FRAC)) / MOON_Y;
 }
-
 function toScreen(xKm, yKm) {
-  const H = canvas.height;
-  const W = canvas.width;
   const sc = getScale();
-  const earthSY = H * (1 - EARTH_Y_FRAC);
-  return {
-    x: W / 2 + xKm * sc,
-    y: earthSY - yKm * sc   // physical up = screen up
-  };
+  const originY = canvas.height * (1 - EARTH_Y_FRAC);
+  return { x: canvas.width/2 + xKm*sc, y: originY - yKm*sc };
 }
-
-// Visual radii converted back to physical km (for collision / launch)
 function collRadii() {
   const sc = getScale();
-  return { earthR: EARTH_VR / sc, moonR: MOON_VR / sc };
+  return { earthR: EARTH_VR/sc, moonR: MOON_VR/sc };
 }
 
 // ============================================================
-//  STARS (seeded, consistent)
+//  STARS (seeded)
 // ============================================================
 const STARS = (() => {
-  const arr = [];
-  let seed = 31337;
-  const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed-1)/2147483646; };
-  for (let i = 0; i < 280; i++) {
-    arr.push({ fx: rnd(), fy: rnd(), r: rnd()*1.4+0.2, a: rnd()*0.55+0.25 });
-  }
+  const arr = []; let seed = 31337;
+  const rnd = () => { seed = (seed*16807)%2147483647; return (seed-1)/2147483646; };
+  for (let i = 0; i < 280; i++)
+    arr.push({ fx:rnd(), fy:rnd(), r:rnd()*1.4+0.2, a:rnd()*0.55+0.25 });
   return arr;
 })();
 
@@ -300,9 +271,9 @@ function drawBackground() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   STARS.forEach(s => {
     ctx.globalAlpha = s.a;
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = '#fff';
     ctx.beginPath();
-    ctx.arc(s.fx * canvas.width, s.fy * canvas.height, s.r, 0, Math.PI*2);
+    ctx.arc(s.fx*canvas.width, s.fy*canvas.height, s.r, 0, Math.PI*2);
     ctx.fill();
   });
   ctx.globalAlpha = 1;
@@ -310,254 +281,142 @@ function drawBackground() {
 
 function roundRect(x, y, w, h, r) {
   ctx.beginPath();
-  ctx.moveTo(x+r, y);
-  ctx.lineTo(x+w-r, y);
-  ctx.arcTo(x+w, y, x+w, y+r, r);
-  ctx.lineTo(x+w, y+h-r);
-  ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
-  ctx.lineTo(x+r, y+h);
-  ctx.arcTo(x, y+h, x, y+h-r, r);
-  ctx.lineTo(x, y+r);
-  ctx.arcTo(x, y, x+r, y, r);
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
   ctx.closePath();
 }
 
 function drawEarth() {
-  const e = toScreen(0, 0);
-  const r = EARTH_VR;
-
-  // Atmosphere glow
-  const atm = ctx.createRadialGradient(e.x, e.y, r*0.9, e.x, e.y, r*1.7);
-  atm.addColorStop(0, 'rgba(60,130,255,0.22)');
-  atm.addColorStop(1, 'rgba(0,0,60,0)');
-  ctx.fillStyle = atm;
-  ctx.beginPath();
-  ctx.arc(e.x, e.y, r*1.7, 0, Math.PI*2);
-  ctx.fill();
-
+  const e = toScreen(0,0), r = EARTH_VR;
+  // Atmosphere
+  const atm = ctx.createRadialGradient(e.x,e.y,r*0.9,e.x,e.y,r*1.7);
+  atm.addColorStop(0,'rgba(60,130,255,0.22)'); atm.addColorStop(1,'rgba(0,0,60,0)');
+  ctx.fillStyle = atm; ctx.beginPath(); ctx.arc(e.x,e.y,r*1.7,0,Math.PI*2); ctx.fill();
   // Ocean
-  const ocean = ctx.createRadialGradient(e.x - r*0.25, e.y - r*0.25, 0, e.x, e.y, r);
-  ocean.addColorStop(0, '#5ab4ff');
-  ocean.addColorStop(0.65, '#1a70d8');
-  ocean.addColorStop(1, '#0a3890');
-  ctx.fillStyle = ocean;
-  ctx.beginPath();
-  ctx.arc(e.x, e.y, r, 0, Math.PI*2);
-  ctx.fill();
-
-  // Continents clipped inside Earth circle
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(e.x, e.y, r, 0, Math.PI*2);
-  ctx.clip();
-
+  const oc = ctx.createRadialGradient(e.x-r*.25,e.y-r*.25,0,e.x,e.y,r);
+  oc.addColorStop(0,'#5ab4ff'); oc.addColorStop(.65,'#1a70d8'); oc.addColorStop(1,'#0a3890');
+  ctx.fillStyle = oc; ctx.beginPath(); ctx.arc(e.x,e.y,r,0,Math.PI*2); ctx.fill();
+  // Continents
+  ctx.save(); ctx.beginPath(); ctx.arc(e.x,e.y,r,0,Math.PI*2); ctx.clip();
   ctx.fillStyle = '#3ca84e';
-  // Europe/Africa
-  roundRect(e.x + r*0.07, e.y - r*0.68, r*0.21, r*0.38, 3); ctx.fill();
-  roundRect(e.x + r*0.05, e.y - r*0.28, r*0.19, r*0.50, 3); ctx.fill();
-  // Americas
-  roundRect(e.x - r*0.53, e.y - r*0.62, r*0.23, r*0.44, 3); ctx.fill();
-  roundRect(e.x - r*0.45, e.y - r*0.12, r*0.20, r*0.50, 3); ctx.fill();
-  // Asia
-  roundRect(e.x + r*0.21, e.y - r*0.70, r*0.44, r*0.38, 4); ctx.fill();
-  // Australia
-  roundRect(e.x + r*0.32, e.y + r*0.22, r*0.21, r*0.14, 3); ctx.fill();
-
-  // Ice caps
-  ctx.fillStyle = 'rgba(225,242,255,0.82)';
-  ctx.beginPath();
-  ctx.arc(e.x, e.y - r*0.83, r*0.44, 0, Math.PI*2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(e.x, e.y + r*0.86, r*0.36, 0, Math.PI*2);
-  ctx.fill();
-
-  // Clouds
-  ctx.fillStyle = 'rgba(255,255,255,0.28)';
-  ctx.beginPath();
-  ctx.ellipse(e.x - r*0.28, e.y - r*0.08, r*0.36, r*0.07, -0.25, 0, Math.PI*2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(e.x + r*0.12, e.y + r*0.38, r*0.30, r*0.065, 0.4, 0, Math.PI*2);
-  ctx.fill();
-
+  roundRect(e.x+r*.07, e.y-r*.68, r*.21, r*.38, 3); ctx.fill();
+  roundRect(e.x+r*.05, e.y-r*.28, r*.19, r*.50, 3); ctx.fill();
+  roundRect(e.x-r*.53, e.y-r*.62, r*.23, r*.44, 3); ctx.fill();
+  roundRect(e.x-r*.45, e.y-r*.12, r*.20, r*.50, 3); ctx.fill();
+  roundRect(e.x+r*.21, e.y-r*.70, r*.44, r*.38, 4); ctx.fill();
+  roundRect(e.x+r*.32, e.y+r*.22, r*.21, r*.14, 3); ctx.fill();
+  ctx.fillStyle = 'rgba(225,242,255,.82)';
+  ctx.beginPath(); ctx.arc(e.x, e.y-r*.83, r*.44, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(e.x, e.y+r*.86, r*.36, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.28)';
+  ctx.beginPath(); ctx.ellipse(e.x-r*.28, e.y-r*.08, r*.36, r*.07, -.25, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(e.x+r*.12, e.y+r*.38, r*.30, r*.065, .4, 0, Math.PI*2); ctx.fill();
   ctx.restore();
 }
 
 function drawMoon() {
-  const m = toScreen(0, MOON_Y);
-  const r = MOON_VR;
-
-  // Glow
-  const glow = ctx.createRadialGradient(m.x, m.y, r, m.x, m.y, r*2.2);
-  glow.addColorStop(0, 'rgba(215,205,165,0.18)');
-  glow.addColorStop(1, 'transparent');
-  ctx.fillStyle = glow;
-  ctx.beginPath();
-  ctx.arc(m.x, m.y, r*2.2, 0, Math.PI*2);
-  ctx.fill();
-
-  // Surface
-  const surf = ctx.createRadialGradient(m.x - r*0.3, m.y - r*0.3, 0, m.x, m.y, r);
-  surf.addColorStop(0, '#eae6d2');
-  surf.addColorStop(0.7, '#b8b4a2');
-  surf.addColorStop(1, '#7e7a6a');
-  ctx.fillStyle = surf;
-  ctx.beginPath();
-  ctx.arc(m.x, m.y, r, 0, Math.PI*2);
-  ctx.fill();
-
-  // Craters
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(m.x, m.y, r, 0, Math.PI*2);
-  ctx.clip();
-  [
-    {dx:0.24, dy:-0.14, cr:0.24},
-    {dx:-0.27,dy: 0.19, cr:0.19},
-    {dx:0.06, dy: 0.33, cr:0.15},
-    {dx:-0.08,dy:-0.34, cr:0.12},
-    {dx:0.34, dy: 0.24, cr:0.10},
-  ].forEach(c => {
-    ctx.fillStyle = 'rgba(88,84,72,0.35)';
-    ctx.beginPath();
-    ctx.arc(m.x + c.dx*r, m.y + c.dy*r, c.cr*r, 0, Math.PI*2);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(55,52,40,0.5)';
-    ctx.lineWidth = 0.5;
-    ctx.stroke();
+  const m = toScreen(0,MOON_Y), r = MOON_VR;
+  const glow = ctx.createRadialGradient(m.x,m.y,r,m.x,m.y,r*2.2);
+  glow.addColorStop(0,'rgba(215,205,165,.18)'); glow.addColorStop(1,'transparent');
+  ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(m.x,m.y,r*2.2,0,Math.PI*2); ctx.fill();
+  const surf = ctx.createRadialGradient(m.x-r*.3,m.y-r*.3,0,m.x,m.y,r);
+  surf.addColorStop(0,'#eae6d2'); surf.addColorStop(.7,'#b8b4a2'); surf.addColorStop(1,'#7e7a6a');
+  ctx.fillStyle = surf; ctx.beginPath(); ctx.arc(m.x,m.y,r,0,Math.PI*2); ctx.fill();
+  ctx.save(); ctx.beginPath(); ctx.arc(m.x,m.y,r,0,Math.PI*2); ctx.clip();
+  [{dx:.24,dy:-.14,cr:.24},{dx:-.27,dy:.19,cr:.19},{dx:.06,dy:.33,cr:.15},
+   {dx:-.08,dy:-.34,cr:.12},{dx:.34,dy:.24,cr:.10}].forEach(c => {
+    ctx.fillStyle='rgba(88,84,72,.35)';
+    ctx.beginPath(); ctx.arc(m.x+c.dx*r, m.y+c.dy*r, c.cr*r, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle='rgba(55,52,40,.5)'; ctx.lineWidth=.5; ctx.stroke();
   });
   ctx.restore();
 }
 
-function drawRocket(sx, sy, angle) {
+// angle: nose points UP when 0, clockwise positive (same as canvas rotate)
+function drawRocket(sx, sy, angle, thrusting, braking) {
   ctx.save();
   ctx.translate(sx, sy);
   ctx.rotate(angle);
 
+  // Engine flame at tail (positive local y)
+  if (thrusting) {
+    const fl = 12 + Math.random()*8;
+    const fg = ctx.createLinearGradient(0,11,0,11+fl);
+    fg.addColorStop(0,'rgba(255,240,120,.95)'); fg.addColorStop(.4,'rgba(255,120,20,.8)'); fg.addColorStop(1,'rgba(255,50,0,0)');
+    ctx.fillStyle = fg;
+    ctx.beginPath(); ctx.moveTo(-4,11); ctx.lineTo(0,11+fl); ctx.lineTo(4,11); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(200,230,255,.5)';
+    ctx.beginPath(); ctx.moveTo(-1.5,11); ctx.lineTo(0,11+fl*.4); ctx.lineTo(1.5,11); ctx.closePath(); ctx.fill();
+  }
+  // Retro thruster at nose (negative local y)
+  if (braking) {
+    const rl = 7 + Math.random()*5;
+    const rg = ctx.createLinearGradient(0,-13,0,-13-rl);
+    rg.addColorStop(0,'rgba(150,200,255,.9)'); rg.addColorStop(1,'rgba(80,120,255,0)');
+    ctx.fillStyle = rg;
+    ctx.beginPath(); ctx.moveTo(-3,-13); ctx.lineTo(0,-13-rl); ctx.lineTo(3,-13); ctx.closePath(); ctx.fill();
+  }
   // Nozzle
   ctx.fillStyle = '#7a8a98';
-  ctx.beginPath();
-  ctx.moveTo(-3.5, 7);
-  ctx.lineTo(3.5, 7);
-  ctx.lineTo(2.5, 11);
-  ctx.lineTo(-2.5, 11);
-  ctx.closePath();
-  ctx.fill();
-
+  ctx.beginPath(); ctx.moveTo(-3.5,7); ctx.lineTo(3.5,7); ctx.lineTo(2.5,11); ctx.lineTo(-2.5,11); ctx.closePath(); ctx.fill();
   // Body
-  const bg = ctx.createLinearGradient(-6, -12, 6, -12);
-  bg.addColorStop(0, '#99aabb');
-  bg.addColorStop(0.5, '#ddeeff');
-  bg.addColorStop(1, '#99aabb');
+  const bg = ctx.createLinearGradient(-6,-12,6,-12);
+  bg.addColorStop(0,'#99aabb'); bg.addColorStop(.5,'#ddeeff'); bg.addColorStop(1,'#99aabb');
   ctx.fillStyle = bg;
-  ctx.beginPath();
-  ctx.moveTo(0, -13);
-  ctx.lineTo(-5.5, 2);
-  ctx.lineTo(-5.5, 7);
-  ctx.lineTo(5.5, 7);
-  ctx.lineTo(5.5, 2);
-  ctx.closePath();
-  ctx.fill();
-  ctx.strokeStyle = '#7a8898';
-  ctx.lineWidth = 0.5;
-  ctx.stroke();
-
+  ctx.beginPath(); ctx.moveTo(0,-13); ctx.lineTo(-5.5,2); ctx.lineTo(-5.5,7); ctx.lineTo(5.5,7); ctx.lineTo(5.5,2); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#7a8898'; ctx.lineWidth=.5; ctx.stroke();
   // Fins
   ctx.fillStyle = '#cc3322';
-  ctx.beginPath();
-  ctx.moveTo(-5.5, 3); ctx.lineTo(-10, 11); ctx.lineTo(-5.5, 11); ctx.closePath(); ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo( 5.5, 3); ctx.lineTo( 10, 11); ctx.lineTo( 5.5, 11); ctx.closePath(); ctx.fill();
-
+  ctx.beginPath(); ctx.moveTo(-5.5,3); ctx.lineTo(-10,11); ctx.lineTo(-5.5,11); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(5.5,3);  ctx.lineTo(10,11);  ctx.lineTo(5.5,11);  ctx.closePath(); ctx.fill();
   // Window
-  ctx.fillStyle = '#88ccff';
-  ctx.beginPath(); ctx.arc(0, -2.5, 3, 0, Math.PI*2); ctx.fill();
-  ctx.strokeStyle = '#aadeff';
-  ctx.lineWidth = 0.6;
-  ctx.stroke();
-
+  ctx.fillStyle='#88ccff'; ctx.beginPath(); ctx.arc(0,-2.5,3,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#aadeff'; ctx.lineWidth=.6; ctx.stroke();
   ctx.restore();
 }
 
-function drawAngleIndicator() {
-  // Show arrow on Earth in ready state
-  const angle = (parseFloat(document.getElementById('angleInput').value) || 0) * Math.PI / 180;
-  const e = toScreen(0, 0);
-  const len = EARTH_VR + 22;
-  const dx = Math.sin(angle) * len;
-  const dy = -Math.cos(angle) * len;  // screen y is flipped
-
+function drawAngleIndicator(angle) {
+  const e = toScreen(0,0);
+  const dx = Math.sin(angle)*(EARTH_VR+22), dy = -Math.cos(angle)*(EARTH_VR+22);
   ctx.save();
-  ctx.strokeStyle = 'rgba(255,200,60,0.5)';
-  ctx.lineWidth = 1.5;
-  ctx.setLineDash([3, 3]);
-  ctx.beginPath();
-  ctx.moveTo(e.x, e.y);
-  ctx.lineTo(e.x + dx * 3, e.y + dy * 3);
-  ctx.stroke();
+  ctx.strokeStyle='rgba(255,200,60,.5)'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(e.x,e.y); ctx.lineTo(e.x+dx*3, e.y+dy*3); ctx.stroke();
   ctx.setLineDash([]);
-
-  // Arrowhead
-  ctx.fillStyle = 'rgba(255,200,60,0.7)';
-  const ax = e.x + dx * 3, ay = e.y + dy * 3;
-  ctx.beginPath();
-  ctx.translate(ax, ay);
-  ctx.rotate(angle);
-  ctx.moveTo(0, -6); ctx.lineTo(-4, 2); ctx.lineTo(4, 2);
-  ctx.closePath();
-  ctx.fill();
   ctx.restore();
-}
-
-function shipAngle(vx, vy) {
-  // Rotate canvas so rocket nose points in velocity direction
-  // screen vx = vx_km (right), screen vy = -vy_km (down is positive screen y)
-  // angle from screen "up" clockwise: atan2(screen_vx, -screen_vy) = atan2(vx, vy)
-  return Math.atan2(vx, vy);
 }
 
 function drawTrail() {
   if (trail.length < 2) return;
   const n = trail.length;
   for (let i = 1; i < n; i++) {
-    const alpha = (i / n) * 0.65;
     const p1 = toScreen(trail[i-1].x, trail[i-1].y);
     const p2 = toScreen(trail[i].x,   trail[i].y);
-    ctx.beginPath();
-    ctx.moveTo(p1.x, p1.y);
-    ctx.lineTo(p2.x, p2.y);
-    ctx.strokeStyle = `rgba(255,190,70,${alpha})`;
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y);
+    ctx.strokeStyle = `rgba(255,190,70,${(i/n)*0.65})`; ctx.lineWidth=1.5; ctx.stroke();
   }
 }
 
 function drawExplosion() {
   explPts.forEach(p => {
     if (p.life <= 0) return;
-    ctx.globalAlpha = p.life * 0.9;
-    ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size * Math.max(p.life, 0.1) + 0.5, 0, Math.PI*2);
-    ctx.fill();
+    ctx.globalAlpha = p.life*0.9; ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.size*Math.max(p.life,.1)+.5, 0, Math.PI*2); ctx.fill();
   });
   ctx.globalAlpha = 1;
 }
 
 function render() {
-  drawBackground();
-  drawEarth();
-  drawMoon();
-  drawTrail();
-
+  drawBackground(); drawEarth(); drawMoon(); drawTrail();
+  const readyAngle = (parseFloat(document.getElementById('angleInput').value)||0) * Math.PI/180;
   if (state === 'ready') {
-    drawAngleIndicator();
-    const e = toScreen(0, 0);
-    drawRocket(e.x, e.y - EARTH_VR - 3, 0);
+    drawAngleIndicator(readyAngle);
+    const e = toScreen(0,0);
+    drawRocket(e.x, e.y - EARTH_VR - 3, readyAngle, false, false);
   } else if (state === 'flying') {
     const s = toScreen(ship.x, ship.y);
-    drawRocket(s.x, s.y, shipAngle(ship.vx, ship.vy));
+    drawRocket(s.x, s.y, ship.angle, input.boost && ship.fuel>0, input.brake && ship.fuel>0);
   } else if (state === 'exploding') {
     drawExplosion();
   }
@@ -567,68 +426,44 @@ function render() {
 //  PHYSICS
 // ============================================================
 function accel(x, y) {
-  // Earth
-  const rE2 = x*x + y*y;
-  const rE  = Math.sqrt(rE2);
-  const axE = -GM_EARTH * x / (rE2 * rE);
-  const ayE = -GM_EARTH * y / (rE2 * rE);
-  // Moon (at x=0, y=MOON_Y)
-  const my  = y - MOON_Y;
-  const rM2 = x*x + my*my;
-  const rM  = Math.sqrt(rM2);
-  const axM = -GM_MOON * x  / (rM2 * rM);
-  const ayM = -GM_MOON * my / (rM2 * rM);
-  return { ax: axE + axM, ay: ayE + ayM };
+  const rE2=x*x+y*y, rE=Math.sqrt(rE2);
+  const my=y-MOON_Y, rM2=x*x+my*my, rM=Math.sqrt(rM2);
+  return {
+    ax: -GM_EARTH*x/(rE2*rE) - GM_MOON*x/(rM2*rM),
+    ay: -GM_EARTH*y/(rE2*rE) - GM_MOON*my/(rM2*rM)
+  };
 }
 
 function rk4Step(dt) {
-  const { x, y, vx, vy } = ship;
-
-  const a1 = accel(x, y);
-  const k1x=vx,          k1y=vy,          k1vx=a1.ax, k1vy=a1.ay;
-
-  const a2 = accel(x + k1x*dt/2, y + k1y*dt/2);
+  const {x,y,vx,vy} = ship;
+  const a1=accel(x,y);
+  const k1x=vx, k1y=vy, k1vx=a1.ax, k1vy=a1.ay;
+  const a2=accel(x+k1x*dt/2, y+k1y*dt/2);
   const k2x=vx+k1vx*dt/2, k2y=vy+k1vy*dt/2, k2vx=a2.ax, k2vy=a2.ay;
-
-  const a3 = accel(x + k2x*dt/2, y + k2y*dt/2);
+  const a3=accel(x+k2x*dt/2, y+k2y*dt/2);
   const k3x=vx+k2vx*dt/2, k3y=vy+k2vy*dt/2, k3vx=a3.ax, k3vy=a3.ay;
-
-  const a4 = accel(x + k3x*dt, y + k3y*dt);
-  const k4x=vx+k3vx*dt,   k4y=vy+k3vy*dt,   k4vx=a4.ax, k4vy=a4.ay;
-
-  ship.x  += dt/6 * (k1x  + 2*k2x  + 2*k3x  + k4x);
-  ship.y  += dt/6 * (k1y  + 2*k2y  + 2*k3y  + k4y);
-  ship.vx += dt/6 * (k1vx + 2*k2vx + 2*k3vx + k4vx);
-  ship.vy += dt/6 * (k1vy + 2*k2vy + 2*k3vy + k4vy);
+  const a4=accel(x+k3x*dt, y+k3y*dt);
+  const k4x=vx+k3vx*dt, k4y=vy+k3vy*dt, k4vx=a4.ax, k4vy=a4.ay;
+  ship.x  += dt/6*(k1x +2*k2x +2*k3x +k4x);
+  ship.y  += dt/6*(k1y +2*k2y +2*k3y +k4y);
+  ship.vx += dt/6*(k1vx+2*k2vx+2*k3vx+k4vx);
+  ship.vy += dt/6*(k1vy+2*k2vy+2*k3vy+k4vy);
 }
 
 function checkCollision() {
-  const { earthR, moonR } = collRadii();
-  const rE = Math.sqrt(ship.x*ship.x + ship.y*ship.y);
-  if (rE < earthR) return 'earth';
-  const my = ship.y - MOON_Y;
-  const rM = Math.sqrt(ship.x*ship.x + my*my);
-  if (rM < moonR) return 'moon';
+  const {earthR,moonR} = collRadii();
+  if (Math.sqrt(ship.x**2+ship.y**2) < earthR) return 'earth';
+  if (Math.sqrt(ship.x**2+(ship.y-MOON_Y)**2) < moonR) return 'moon';
   return null;
 }
-
 function isGone() {
-  if (Math.abs(ship.x) > 1.5e6)  return true;
-  if (ship.y < -3e5)              return true;
-  if (ship.y > MOON_Y + 2.5e5)   return true;
-  return false;
+  return Math.abs(ship.x)>1.5e6 || ship.y<-3e5 || ship.y>MOON_Y+2.5e5;
 }
-
 function isInMoonOrbit() {
-  // Bound to Moon: total energy relative to Moon < 0
-  const my = ship.y - MOON_Y;
-  const rM = Math.sqrt(ship.x*ship.x + my*my);
-  const { moonR } = collRadii();
-  if (rM > 80000 || rM < moonR * 1.1) return false;  // too far or too close
-  // Specific orbital energy = 0.5*v² - GM/r
-  const v2 = ship.vx*ship.vx + ship.vy*ship.vy;
-  const energy = 0.5 * v2 - GM_MOON / rM;
-  return energy < 0;
+  const my=ship.y-MOON_Y, rM=Math.sqrt(ship.x**2+my**2);
+  const {moonR}=collRadii();
+  if (rM>80000 || rM<moonR*1.1) return false;
+  return .5*(ship.vx**2+ship.vy**2) - GM_MOON/rM < 0;
 }
 
 // ============================================================
@@ -637,18 +472,23 @@ function isInMoonOrbit() {
 function startExplosion(xKm, yKm) {
   const s = toScreen(xKm, yKm);
   explPts = [];
-  for (let i = 0; i < 45; i++) {
-    const a   = Math.random() * Math.PI*2;
-    const spd = 1.5 + Math.random() * 5;
-    const hue = Math.floor(Math.random() * 55);
-    explPts.push({
-      x: s.x, y: s.y,
-      vx: Math.cos(a)*spd, vy: Math.sin(a)*spd,
-      life: 1, size: 2 + Math.random()*5,
-      color: `hsl(${hue},100%,65%)`
-    });
+  for (let i=0; i<45; i++) {
+    const a=Math.random()*Math.PI*2, spd=1.5+Math.random()*5;
+    explPts.push({ x:s.x, y:s.y, vx:Math.cos(a)*spd, vy:Math.sin(a)*spd,
+      life:1, size:2+Math.random()*5, color:`hsl(${Math.floor(Math.random()*55)},100%,65%)` });
   }
   explTimer = 2.5;
+}
+
+// ============================================================
+//  FUEL BAR
+// ============================================================
+function updateFuelBar() {
+  const p = ship.fuel;
+  fuelFill.style.width = (p*100)+'%';
+  fuelFill.style.background = p>0.5 ? 'linear-gradient(90deg,#00cc44,#66ff44)'
+    : p>0.2 ? 'linear-gradient(90deg,#aacc00,#ffdd00)'
+    : 'linear-gradient(90deg,#cc3300,#ff5500)';
 }
 
 // ============================================================
@@ -656,56 +496,63 @@ function startExplosion(xKm, yKm) {
 // ============================================================
 function loop(ts) {
   if (!lastTs) lastTs = ts;
-  const realDt = Math.min((ts - lastTs) / 1000, 0.05);
+  const realDt = Math.min((ts-lastTs)/1000, 0.05);
   lastTs = ts;
 
   if (state === 'flying') {
-    const simDt = realDt * TIME_MULT;
-    const subDt = simDt / SUBSTEPS;
-    let hit = null;
-    for (let i = 0; i < SUBSTEPS && !hit; i++) {
-      rk4Step(subDt);
-      hit = checkCollision();
+    // Apply controls (real time → instant delta-v)
+    if (input.boost && ship.fuel>0) {
+      ship.vx += Math.sin(ship.angle)*THRUST_DV*realDt;
+      ship.vy += Math.cos(ship.angle)*THRUST_DV*realDt;
+      ship.fuel = Math.max(0, ship.fuel - FUEL_BOOST_RATE*realDt);
     }
+    if (input.brake && ship.fuel>0) {
+      ship.vx -= Math.sin(ship.angle)*THRUST_DV*realDt;
+      ship.vy -= Math.cos(ship.angle)*THRUST_DV*realDt;
+      ship.fuel = Math.max(0, ship.fuel - FUEL_BOOST_RATE*realDt);
+    }
+    if (input.left && ship.fuel>0) {
+      ship.angle -= TURN_SPEED*realDt;
+      ship.fuel = Math.max(0, ship.fuel - FUEL_TURN_RATE*realDt);
+    }
+    if (input.right && ship.fuel>0) {
+      ship.angle += TURN_SPEED*realDt;
+      ship.fuel = Math.max(0, ship.fuel - FUEL_TURN_RATE*realDt);
+    }
+    updateFuelBar();
 
-    trail.push({ x: ship.x, y: ship.y });
-    if (trail.length > 700) trail.shift();
+    // Physics (sim time)
+    const subDt = realDt*TIME_MULT/SUBSTEPS;
+    let hit = null;
+    for (let i=0; i<SUBSTEPS && !hit; i++) { rk4Step(subDt); hit=checkCollision(); }
+
+    trail.push({x:ship.x, y:ship.y});
+    if (trail.length>700) trail.shift();
 
     if (hit) {
       startExplosion(ship.x, ship.y);
-      state = 'exploding';
-      inOrbit = false;
-      setStatus(hit === 'moon' ? '💥 Botsing met de maan!' : '💥 Botsing met de aarde!');
-      setOrbit('');
-      setButtons(false);
+      state='exploding'; inOrbit=false;
+      setStatus(hit==='moon' ? '💥 Botsing met de maan!' : '💥 Botsing met de aarde!');
+      setOrbit(''); setButtons(false);
+      fuelHud.style.display='none'; dpad.style.display='none';
     } else if (isGone()) {
-      reset();
-      setStatus('🌌 Ruimteschip verdwenen in het heelal...');
-      setTimeout(() => setStatus(''), 3500);
+      reset(); setStatus('🌌 Ruimteschip verdwenen in het heelal...');
+      setTimeout(()=>setStatus(''), 3500);
     } else {
-      const spd  = Math.sqrt(ship.vx**2 + ship.vy**2).toFixed(2);
-      const dist = Math.round(Math.sqrt(ship.x**2 + (ship.y - MOON_Y)**2));
-      setStatus(`🚀 ${spd} km/s  ·  🌕 ${dist.toLocaleString('nl-NL')} km`);
-
-      const nowInOrbit = isInMoonOrbit();
-      if (nowInOrbit && !inOrbit) {
-        setOrbit('🛸 In baan rond de maan!');
-      } else if (!nowInOrbit) {
-        setOrbit('');
-      }
-      inOrbit = nowInOrbit;
+      const spd  = Math.sqrt(ship.vx**2+ship.vy**2).toFixed(2);
+      const dist = Math.round(Math.sqrt(ship.x**2+(ship.y-MOON_Y)**2));
+      const fuel = Math.round(ship.fuel*100);
+      setStatus(`🚀 ${spd} km/s  ·  🌕 ${dist.toLocaleString('nl-NL')} km  ·  ⛽ ${fuel}%`);
+      const nowOrbit = isInMoonOrbit();
+      if (nowOrbit && !inOrbit) setOrbit('🛸 In baan rond de maan!');
+      else if (!nowOrbit) setOrbit('');
+      inOrbit = nowOrbit;
     }
 
   } else if (state === 'exploding') {
     explTimer -= realDt;
-    explPts.forEach(p => {
-      p.x  += p.vx; p.y  += p.vy;
-      p.vx *= 0.95; p.vy *= 0.95;
-      p.life -= realDt * 0.65;
-    });
-    if (explTimer <= 0) {
-      reset();
-    }
+    explPts.forEach(p => { p.x+=p.vx; p.y+=p.vy; p.vx*=.95; p.vy*=.95; p.life-=realDt*.65; });
+    if (explTimer<=0) reset();
   }
 
   render();
@@ -715,61 +562,82 @@ function loop(ts) {
 // ============================================================
 //  HELPERS
 // ============================================================
-function setStatus(msg)  { document.getElementById('status').textContent = msg; }
-function setOrbit(msg)   { document.getElementById('orbit-msg').textContent = msg; }
+function setStatus(m) { document.getElementById('status').textContent = m; }
+function setOrbit(m)  { document.getElementById('orbit-msg').textContent = m; }
 function setButtons(fly) {
   document.getElementById('startBtn').disabled = fly;
   document.getElementById('abortBtn').disabled = !fly;
 }
 function reset() {
-  state   = 'ready';
-  trail   = [];
-  explPts = [];
-  inOrbit = false;
+  state='ready'; trail=[]; explPts=[]; inOrbit=false;
+  input.boost=input.brake=input.left=input.right=false;
+  fuelHud.style.display='none'; dpad.style.display='none';
   setButtons(false);
-  setTimeout(() => { setStatus(''); setOrbit(''); }, 100);
+  setTimeout(()=>{ setStatus(''); setOrbit(''); }, 100);
 }
 
 // ============================================================
-//  CONTROLS
+//  LAUNCH
 // ============================================================
 document.getElementById('startBtn').addEventListener('click', () => {
-  const angle = (parseFloat(document.getElementById('angleInput').value) || 0) * Math.PI / 180;
-  const speed = parseFloat(document.getElementById('speedInput').value) || 1;
-  const { earthR } = collRadii();
-
+  const angle = (parseFloat(document.getElementById('angleInput').value)||0)*Math.PI/180;
+  const speed = parseFloat(document.getElementById('speedInput').value)||1;
+  const {earthR} = collRadii();
   ship = {
-    x:  0,
-    y:  earthR + 300,          // just above visual Earth surface
-    vx: speed * Math.sin(angle),
-    vy: speed * Math.cos(angle) // 0° = straight up
+    x: 0, y: earthR+300,
+    vx: speed*Math.sin(angle), vy: speed*Math.cos(angle),
+    angle: angle, fuel: 1
   };
-  trail = [{ x: ship.x, y: ship.y }];
-  state = 'flying';
-  inOrbit = false;
-  setStatus('🚀 Lancering!');
-  setOrbit('');
-  setButtons(true);
+  trail=[{x:ship.x,y:ship.y}]; state='flying'; inOrbit=false;
+  setStatus('🚀 Lancering!'); setOrbit(''); setButtons(true);
+  updateFuelBar();
+  fuelHud.style.display='block'; dpad.style.display='block';
 });
 
-document.getElementById('abortBtn').addEventListener('click', () => {
+document.getElementById('abortBtn').addEventListener('click', ()=>{
   document.getElementById('modal').classList.add('show');
 });
-
-// Angle input re-draws arrow in real time
-document.getElementById('angleInput').addEventListener('input', () => {
-  if (state === 'ready') render();
+document.getElementById('angleInput').addEventListener('input', ()=>{
+  if (state==='ready') render();
 });
-
 window.confirmAbort = () => {
   document.getElementById('modal').classList.remove('show');
-  reset();
-  setStatus('Vlucht afgebroken.');
-  setTimeout(() => setStatus(''), 3000);
+  reset(); setStatus('Vlucht afgebroken.'); setTimeout(()=>setStatus(''),3000);
 };
-window.cancelAbort = () => {
-  document.getElementById('modal').classList.remove('show');
-};
+window.cancelAbort = () => { document.getElementById('modal').classList.remove('show'); };
+
+// ============================================================
+//  KEYBOARD
+// ============================================================
+window.addEventListener('keydown', e => {
+  if (state!=='flying') return;
+  if (e.key==='ArrowUp')    { input.boost=true; e.preventDefault(); }
+  if (e.key==='ArrowDown')  { input.brake=true; e.preventDefault(); }
+  if (e.key==='ArrowLeft')  { input.left =true; e.preventDefault(); }
+  if (e.key==='ArrowRight') { input.right=true; e.preventDefault(); }
+});
+window.addEventListener('keyup', e => {
+  if (e.key==='ArrowUp')    input.boost=false;
+  if (e.key==='ArrowDown')  input.brake=false;
+  if (e.key==='ArrowLeft')  input.left =false;
+  if (e.key==='ArrowRight') input.right=false;
+});
+
+// ============================================================
+//  D-PAD
+// ============================================================
+function setupBtn(id, key) {
+  const btn = document.getElementById(id);
+  btn.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    if (state==='flying') { input[key]=true; btn.classList.add('pressed'); }
+  });
+  ['pointerup','pointerleave','pointercancel'].forEach(ev =>
+    btn.addEventListener(ev, () => { input[key]=false; btn.classList.remove('pressed'); })
+  );
+}
+setupBtn('btn-boost','boost'); setupBtn('btn-brake','brake');
+setupBtn('btn-left', 'left');  setupBtn('btn-right','right');
 
 // ============================================================
 //  START
