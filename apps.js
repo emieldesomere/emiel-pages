@@ -19,5 +19,12 @@ const APPS = [
     description: "Lanceer een ruimteschip en probeer in een baan om de maan te geraken!",
     icon: "🚀",
     visible: true
+  },
+  {
+    name: "PSR Battle",
+    folder: "psr-battle",
+    description: "30 strijders vechten het uit! Wie wint: 📄, ✂️ of 🪨?",
+    icon: "⚔️",
+    visible: true
   }
 ];

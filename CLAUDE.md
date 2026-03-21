@@ -126,11 +126,11 @@ Do not prematurely architect for it.
 ## 8. Repository Structure Rules
 
 - `/index.html` lists applications
-- `/apps.json` controls visibility
+- `/apps.js` controls visibility
 - `/apps/<app-name>/` contains each application
 - Applications must include a clear exit mechanism returning to `/index.html`
 - Applications must never be deleted
-- To hide an application, set `"visible": false` in apps.json
+- To hide an application, set `visible: false` in apps.js
 
 Respect the structure strictly.
 

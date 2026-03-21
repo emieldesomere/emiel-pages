@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Papier-Schaar-Rots Battle</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0f0f1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: white;
+      gap: 14px;
+      padding: 16px;
+    }
+
+    h1 { font-size: 1.7em; }
+
+    #scoreboard {
+      display: flex;
+      gap: 28px;
+      font-size: 1.4em;
+      background: #1e1e30;
+      padding: 10px 28px;
+      border-radius: 12px;
+    }
+
+    .score-item { display: flex; align-items: center; gap: 6px; }
+    .score-item span { min-width: 28px; text-align: right; font-weight: bold; }
+
+    #canvas {
+      border: 3px solid #333;
+      border-radius: 12px;
+      background: #13131f;
+      display: block;
+    }
+
+    #winner {
+      font-size: 2.2em;
+      font-weight: bold;
+      min-height: 1.4em;
+      text-align: center;
+    }
+
+    #controls { display: flex; gap: 14px; }
+
+    button {
+      padding: 10px 32px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+
+    #start-btn  { background: #e94560; }
+    #start-btn:hover { background: #c73652; }
+    #restart-btn { background: #3a7bd5; display: none; }
+    #restart-btn:hover { background: #2c60ae; }
+    #back-btn { background: #444; font-size: 0.95em; padding: 8px 20px; }
+    #back-btn:hover { background: #666; }
+  </style>
+</head>
+<body>
+
+  <h1>⚔️ Papier-Schaar-Rots Battle</h1>
+
+  <div id="scoreboard">
+    <div class="score-item">📄 <span id="cnt-paper">10</span></div>
+    <div class="score-item">✂️ <span id="cnt-scissors">10</span></div>
+    <div class="score-item">🪨 <span id="cnt-rock">10</span></div>
+  </div>
+
+  <canvas id="canvas"></canvas>
+
+  <div id="winner"></div>
+
+  <div id="controls">
+    <button id="start-btn">▶ Start</button>
+    <button id="restart-btn">🔄 Opnieuw</button>
+  </div>
+
+  <button id="back-btn" onclick="window.location.href='../../index.html'">← Terug</button>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Canvas size based on screen
+    const W = Math.min(600, window.innerWidth - 32);
+    const H = Math.round(W * 5 / 6);
+    canvas.width = W;
+    canvas.height = H;
+
+    const TYPES = ['paper', 'scissors', 'rock'];
+    const EMOJI = { paper: '📄', scissors: '✂️', rock: '🪨' };
+    const R = Math.round(W * 0.038);   // collision radius
+    const SPEED = W * 0.004;           // base speed
+    const COUNT = 10;
+
+    // a beats b?
+    function beats(a, b) {
+      return (a === 'scissors' && b === 'paper')
+          || (a === 'rock'     && b === 'scissors')
+          || (a === 'paper'    && b === 'rock');
+    }
+
+    let entities = [];
+    let animId = null;
+    let running = false;
+
+    function randVel() {
+      const angle = Math.random() * Math.PI * 2;
+      // Vary speed slightly so they don't all move at same pace
+      const spd = SPEED * (0.7 + Math.random() * 0.9);
+      return { vx: Math.cos(angle) * spd, vy: Math.sin(angle) * spd };
+    }
+
+    function init() {
+      entities = [];
+      TYPES.forEach(type => {
+        for (let i = 0; i < COUNT; i++) {
+          const v = randVel();
+          entities.push({
+            type,
+            x: R + Math.random() * (W - R * 2),
+            y: R + Math.random() * (H - R * 2),
+            vx: v.vx,
+            vy: v.vy,
+          });
+        }
+      });
+      updateScoreboard();
+    }
+
+    function updateScoreboard() {
+      document.getElementById('cnt-paper').textContent    = entities.filter(e => e.type === 'paper').length;
+      document.getElementById('cnt-scissors').textContent = entities.filter(e => e.type === 'scissors').length;
+      document.getElementById('cnt-rock').textContent     = entities.filter(e => e.type === 'rock').length;
+    }
+
+    function drawRock(x, y) {
+      const s = R * 1.1;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.beginPath();
+      ctx.moveTo(0, -s);
+      ctx.bezierCurveTo( s * 0.6, -s * 0.9,  s * 1.1, -s * 0.3,  s * 0.9,  s * 0.4);
+      ctx.bezierCurveTo( s * 0.7,  s * 1.0, -s * 0.6,  s * 1.0, -s * 0.9,  s * 0.4);
+      ctx.bezierCurveTo(-s * 1.1, -s * 0.3, -s * 0.6, -s * 0.9,  0, -s);
+      ctx.closePath();
+      const grad = ctx.createRadialGradient(-s * 0.2, -s * 0.3, s * 0.1, 0, 0, s * 1.1);
+      grad.addColorStop(0, '#d0d0d0');
+      grad.addColorStop(0.5, '#888');
+      grad.addColorStop(1, '#444');
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.font = `${R * 1.5}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      entities.forEach(e => {
+        if (e.type === 'rock') {
+          drawRock(e.x, e.y);
+        } else {
+          ctx.fillText(EMOJI[e.type], e.x, e.y);
+        }
+      });
+    }
+
+    function update() {
+      // Move + wall bounce
+      entities.forEach(e => {
+        e.x += e.vx;
+        e.y += e.vy;
+        if (e.x < R)     { e.x = R;     e.vx =  Math.abs(e.vx); }
+        if (e.x > W - R) { e.x = W - R; e.vx = -Math.abs(e.vx); }
+        if (e.y < R)     { e.y = R;     e.vy =  Math.abs(e.vy); }
+        if (e.y > H - R) { e.y = H - R; e.vy = -Math.abs(e.vy); }
+      });
+
+      // Randomly change direction occasionally (so they don't get stuck)
+      entities.forEach(e => {
+        if (Math.random() < 0.004) {
+          const v = randVel();
+          e.vx = v.vx;
+          e.vy = v.vy;
+        }
+      });
+
+      // Collision detection
+      const toRemove = new Set();
+      for (let i = 0; i < entities.length; i++) {
+        if (toRemove.has(i)) continue;
+        for (let j = i + 1; j < entities.length; j++) {
+          if (toRemove.has(j)) continue;
+          const a = entities[i];
+          const b = entities[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < R * 2) {
+            if (a.type === b.type) {
+              // Bounce: swap velocities
+              [a.vx, b.vx] = [b.vx, a.vx];
+              [a.vy, b.vy] = [b.vy, a.vy];
+              // Push apart so they don't overlap
+              const overlap = R * 2 - dist + 1;
+              const nx = dist > 0 ? dx / dist : 1;
+              const ny = dist > 0 ? dy / dist : 0;
+              a.x += nx * overlap / 2;
+              a.y += ny * overlap / 2;
+              b.x -= nx * overlap / 2;
+              b.y -= ny * overlap / 2;
+            } else if (beats(a.type, b.type)) {
+              toRemove.add(j);
+            } else {
+              toRemove.add(i);
+              break; // a is gone, skip rest of i's comparisons
+            }
+          }
+        }
+      }
+
+      if (toRemove.size > 0) {
+        entities = entities.filter((_, i) => !toRemove.has(i));
+        updateScoreboard();
+      }
+
+      // Check winner
+      const alive = new Set(entities.map(e => e.type));
+      if (alive.size === 1) {
+        showWinner([...alive][0]);
+      } else if (entities.length === 0) {
+        showWinner(null);
+      }
+    }
+
+    function showWinner(type) {
+      running = false;
+      cancelAnimationFrame(animId);
+      const d = document.getElementById('winner');
+      d.textContent = type
+        ? `${EMOJI[type]} WINNAAR! 🎉`
+        : 'Niemand gewonnen...';
+      document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+
+    function loop() {
+      if (!running) return;
+      update();
+      draw();
+      animId = requestAnimationFrame(loop);
+    }
+
+    function startGame() {
+      document.getElementById('winner').textContent = '';
+      document.getElementById('restart-btn').style.display = 'none';
+      if (animId) cancelAnimationFrame(animId);
+      running = false;
+      init();
+      running = true;
+      animId = requestAnimationFrame(loop);
+    }
+
+    document.getElementById('start-btn').addEventListener('click', () => {
+      document.getElementById('start-btn').style.display = 'none';
+      startGame();
+    });
+    document.getElementById('restart-btn').addEventListener('click', startGame);
+
+    // Show initial state
+    init();
+    draw();
+  </script>
+</body>
+</html>
